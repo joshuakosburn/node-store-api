@@ -1,0 +1,32 @@
+{
+  "name": "store-api",
+  "version": "1.0.0",
+  "description": "A simple store API built on NodeJS using JavaScript, HTML, and CSS.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshuakosburn/node-store-api.git"
+  },
+  "keywords": [
+    "API",
+    "store",
+    "javascript"
+  ],
+  "author": "Joshua Osburn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joshuakosburn/node-store-api/issues"
+  },
+  "homepage": "https://github.com/joshuakosburn/node-store-api#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.12"
+  }
+}
