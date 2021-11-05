@@ -30,7 +30,7 @@ const productSchema = new mongoose.Schema({
                 'caressa',
                 'marcos'
             ],
-            message: '{VALUES} is not supported!'
+            message: '{VALUE} is not supported!'
         },
     },
 
