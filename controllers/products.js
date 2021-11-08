@@ -5,19 +5,16 @@ const Product = require('../models/Product');
 // PATCH - Remember Idempotency!
 // DELETE
 const getAllProductsStatic = async (req, res) => {
-    const products = await Product.find({})
-                    .sort('name')
-                    .select('name price')
-                    .limit(10)
-                    .skip(5);
+    const products = await Product.find({ price: { $gt: 30 } })
+                    .sort('price')
+                    .select('name price');
     res.status(200).json({ products, nbHits: products.length });
 }
 
 const getAllProducts = async (req, res) => {
     // Destructure specific values in the query.
     // These are specific keywords we are looking for.
-    const { featured, company, name, sort, fields } = req.query;
-
+    const { featured, company, name, sort, fields, numericFilters } = req.query;
     // Create an empty object called queryObject.
     // Use this to set keyword values.
     const queryObject = {}
@@ -41,6 +38,26 @@ const getAllProducts = async (req, res) => {
         // If it was, set it to the value that was
         // passed in the query.
         queryObject.name = { $regex: name, $options: 'i' };
+    }
+
+    if (numericFilters) {
+        const operatorMap = {
+            '>':'$gt',
+            '>=':'$gte',
+            '<':'$lt',
+            '<=':'$lte',
+            '=':'$eq'
+        };
+
+        const regEx = /\b(<|<=|=|>=|>)\b/g;
+        let filters = numericFilters.replace(regEx, (match) => `-${operatorMap[match]}-`);
+        const options = ['price', 'rating'];
+        filters = filters.split(',').forEach((item) => {
+            const [field,operator,value] = item.split('-');
+            if (options.includes(field)) {
+                queryObject[field] = { [operator]: Number(value) }
+            }
+        });
     }
 
     // Set result to the Product.find function with passing the
